@@ -36,23 +36,44 @@ window.addEventListener("load", function(){
          itemStatus.style.visibility = "visible";
          pilotStatus.innerHTML = `Pilot ${pilot} is ready for launch`;
          copilotStatus.innerHTML = `Co-pilot ${copilot} is ready for launch`;
-         if(fuel < 10000){
-            fuelStatus.innerHTML = `${fuel} liters is not enough fuel for launch`;
-            launchStatus.innerHTML = "<span style='color:red'>Shuttle not ready for launch</span>";
-         }else{
+         if(fuel >= 10000 && cargo <= 10000){
             fuelStatus.innerHTML = `Fuel level check passed`;
+            cargoStatus.innerHTML = `Cargo mass check passed`;
             launchStatus.innerHTML = "<span style='color:green'>Shuttle is ready for launch</span>";
-         };
-         if (cargo > 10000){
+         }else if (fuel < 10000 && cargo <= 10000){
+            fuelStatus.innerHTML = `${fuel} liters is not enough fuel for launch`;
+            cargoStatus.innerHTML = `Cargo mass check passed`;
+            launchStatus.innerHTML = "<span style='color:red'>Shuttle not ready for launch</span>";
+         }else if(cargo > 10000 && fuel >= 10000){
+            fuelStatus.innerHTML = `Fuel level check passed`;
             cargoStatus.innerHTML = `${cargo} is too heavy for launch`;
             launchStatus.innerHTML = "<span style='color:red'>Shuttle not ready for launch</span>";
          }else{
-            cargoStatus.innerHTML = `Cargo mass check passed`;
-            launchStatus.innerHTML = "<span style='color:green'>Shuttle is ready for launch</span>";
-         }
-      }
+            fuelStatus.innerHTML = `${fuel} liters is not enough fuel for launch`;
+            cargoStatus.innerHTML = `${cargo} is too heavy for launch`;
+            launchStatus.innerHTML = "<span style='color:red'>Shuttle not ready for launch</span>";
+         };
+      };
 
 
+   });
+
+   let json = [];
+   this.fetch("https://handlers.education.launchcode.org/static/planets.json").then(function(response){
+      response.json().then(function(json){
+         const missionTarget = document.getElementById("missionTarget");
+         let index = Math.floor(Math.random()*json.length);
+         missionTarget.innerHTML=`
+         <h2>Mission Destination</h2>
+            <ul>
+               <li>Name: ${json[index].name}</li>
+               <li>Diameter: ${json[index].diameter}</li>
+               <li>Star: ${json[index].star}</li>
+               <li>Distance from Earth: ${json[index].distance}</li>
+               <li>Number of Moons: ${json[index].moons}</li>
+            </ul>
+            <img src="${json[index].image}">`
+      });
    });
 
 });
