@@ -1,7 +1,9 @@
 // Write your JavaScript code here!
 window.addEventListener("load", function(){
    let form = document.getElementById("launchForm");
+   let itemStatus = document.getElementById("itemStatus");
 
+   let launchStatus = document.getElementById('launchStatus');
    let pilotStatus = document.getElementById('pilotStatus');
    let copilotStatus = document.getElementById('copilotStatus');
    let fuelStatus = document.getElementById('fuelStatus');
@@ -28,11 +30,29 @@ window.addEventListener("load", function(){
 
       if(!pilot || !copilot || !fuel || !cargo){
          alert("All fields required");
-      }else if(isNaN(pilot) === false || isNaN(copilot) === false || isNaN(fuel) === true || isNaN(cargo) === true){
-         alert("Please enter valid information.");
+      }else if(isNaN(pilotCheck) === false || isNaN(copilotCheck) === false || isNaN(fuelCheck) === true || isNaN(cargoCheck) === true){
+         alert("Please enter valid information type.");
+      }else{
+         itemStatus.style.visibility = "visible";
+         pilotStatus.innerHTML = `Pilot ${pilot} is ready for launch`;
+         copilotStatus.innerHTML = `Co-pilot ${copilot} is ready for launch`;
+         if(fuel < 10000){
+            fuelStatus.innerHTML = `${fuel} liters is not enough fuel for launch`;
+            launchStatus.innerHTML = "<span style='color:red'>Shuttle not ready for launch</span>";
+         }else{
+            fuelStatus.innerHTML = `Fuel level check passed`;
+            launchStatus.innerHTML = "<span style='color:green'>Shuttle is ready for launch</span>";
+         };
+         if (cargo > 10000){
+            cargoStatus.innerHTML = `${cargo} is too heavy for launch`;
+            launchStatus.innerHTML = "<span style='color:red'>Shuttle not ready for launch</span>";
+         }else{
+            cargoStatus.innerHTML = `Cargo mass check passed`;
+            launchStatus.innerHTML = "<span style='color:green'>Shuttle is ready for launch</span>";
+         }
       }
 
-      
+
    });
 
 });
